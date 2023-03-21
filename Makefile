@@ -38,6 +38,7 @@ tar:
 	$(MAKE) build/out/coredns_$(COREDNS_VERSION)_linux_amd64+fips.tar.gz SYSTEM="GOOS=linux GOARCH=amd64 GOEXPERIMENT=boringcrypto"
 	$(MAKE) build/out/coredns_$(COREDNS_VERSION)_darwin_arm64+fips.tar.gz SYSTEM="GOOS=darwin GOARCH=arm64 GOEXPERIMENT=boringcrypto"
 	$(MAKE) build/out/coredns_$(COREDNS_VERSION)_darwin_amd64+fips.tar.gz SYSTEM="GOOS=darwin GOARCH=amd64 GOEXPERIMENT=boringcrypto"
+	$(MAKE) build/out/coredns_$(COREDNS_VERSION)_windows_amd64+fips.tar.gz SYSTEM="GOOS=windows GOARCH=amd64 GOEXPERIMENT=boringcrypto"
 
 .PHONY: clean/src
 clean/src:
