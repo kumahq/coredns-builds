@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    tags:
-      - '*'
 
 jobs:
   build:
@@ -23,20 +21,28 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
-      - run: |
+      - id: package
+        run: |
           make tar
           for i in build/out/*.tar.gz; do
             echo ${i}
             tar -tvf ${i}
           done
+          echo "version=$(make get-version)" >> $GITHUB_OUTPUT
       - uses: actions/upload-artifact@v3
         with:
           name: coredns
           path: build/out
           retention-days: ${{ github.event_name == 'pull_request' && 1 || 30 }}
+      - id: existing-tags
+        run: |
+          echo "tags=$(gh api repos/{owner}/{repo}/releases | jq '.[].tag_name')" >> $GITHUB_OUTPUT
       - name: release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
+        if: >-
+          !contains(steps.existing-tags.outputs.tags, steps.package.outputs.version)
+          && github.event_name != 'pull_request'
         with:
+          tag_name: ${{ steps.package.outputs.version }}
           files: |
             build/out/*
