@@ -1,5 +1,5 @@
 COREDNS_REPO ?= https://github.com/coredns/coredns
-COREDNS_VERSION ?= $(shell go  list -m  -f '{{.Version}}' github.com/coredns/coredns)
+COREDNS_VERSION ?= $(shell go list -m -f '{{if .Replace }}{{ .Replace.Version }}{{ else }}{{ .Version }}{{ end }}' github.com/coredns/coredns)
 TOP := $(shell pwd)
 
 src/coredns: go.mod
