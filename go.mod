@@ -1,7 +1,6 @@
 module github.com/kuma/coredns-builds
 
-go 1.21
-toolchain go1.22.5
+go 1.23.3
 
 require (
 	github.com/coredns/alternate v0.2.12
